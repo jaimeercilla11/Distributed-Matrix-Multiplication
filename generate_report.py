@@ -1,4 +1,3 @@
-# generate_report.py
 import json
 import matplotlib.pyplot as plt
 import numpy as np
@@ -16,11 +15,10 @@ def plot_scalability(results):
     """
     sizes = [r['size'] for r in results]
     
-    # Extraer tiempos por método
     basic_times = []
     optimized_times = []
-    parallel_times = {}  # {num_workers: [times]}
-    mapreduce_times = {}  # {num_workers: [times]}
+    parallel_times = {}  
+    mapreduce_times = {}  
     
     for result in results:
         for test in result['tests']:
@@ -42,16 +40,13 @@ def plot_scalability(results):
                     mapreduce_times[workers] = []
                 mapreduce_times[workers].append(time_val)
     
-    # Crear gráfica
     fig, ax = plt.subplots(figsize=(14, 8))
     
-    # Básico y optimizado
     ax.plot(sizes, basic_times, 'o-', label='Básico (secuencial)', 
             linewidth=2.5, markersize=10, color='#e74c3c')
     ax.plot(sizes, optimized_times, 's-', label='Optimizado (cache)', 
             linewidth=2.5, markersize=10, color='#3498db')
     
-    # Paralelo
     colors_parallel = ['#2ecc71', '#27ae60', '#16a085', '#1abc9c']
     markers = ['^', 'v', '<', '>']
     
@@ -61,7 +56,6 @@ def plot_scalability(results):
                 linewidth=2.5, markersize=10, 
                 color=colors_parallel[idx % len(colors_parallel)])
     
-    # MapReduce
     colors_mapreduce = ['#f39c12', '#e67e22', '#d35400', '#e74c3c']
     markers_mr = ['D', 'p', 'h', '*']
     
@@ -91,8 +85,7 @@ def plot_speedup(results):
     """
     sizes = [r['size'] for r in results]
     
-    # Extraer speedups
-    speedup_data = {}  # {size: {workers: speedup}}
+    speedup_data = {}
     
     for result in results:
         size = result['size']
@@ -106,7 +99,6 @@ def plot_speedup(results):
                 speedup = baseline_time / test['total_time']
                 speedup_data[size][workers] = speedup
     
-    # Crear gráfica
     fig, ax = plt.subplots(figsize=(10, 7))
     
     colors = ['#3498db', '#e74c3c', '#2ecc71', '#f39c12']
@@ -121,7 +113,6 @@ def plot_speedup(results):
                 linewidth=2.5, markersize=10,
                 color=colors[idx % len(colors)])
     
-    # Línea de speedup ideal (lineal)
     max_workers = max(max(speedup_data[size]. keys()) for size in sizes)
     ax.plot([1, max_workers], [1, max_workers], 'k--', 
             label='Ideal (linear)', linewidth=2, alpha=0.5)
@@ -145,8 +136,7 @@ def plot_efficiency(results):
     """
     sizes = [r['size'] for r in results]
     
-    # Extraer efficiency
-    efficiency_data = {}  # {size: {workers: efficiency}}
+    efficiency_data = {}  
     
     for result in results:
         size = result['size']
@@ -157,7 +147,6 @@ def plot_efficiency(results):
                 workers = test['num_workers']
                 efficiency_data[size][workers] = test['efficiency']
     
-    # Crear gráfica
     fig, ax = plt.subplots(figsize=(10, 7))
     
     colors = ['#3498db', '#e74c3c', '#2ecc71', '#f39c12']
@@ -172,7 +161,6 @@ def plot_efficiency(results):
                 linewidth=2.5, markersize=10,
                 color=colors[idx % len(colors)])
     
-    # Línea de 100% efficiency
     ax.axhline(y=100, color='k', linestyle='--', 
                label='Ideal (100%)', linewidth=2, alpha=0.5)
     
@@ -196,8 +184,7 @@ def plot_overhead(results):
     """
     sizes = [r['size'] for r in results]
     
-    # Extraer overhead data
-    overhead_data = {}  # {workers: {size: overhead_%}}
+    overhead_data = {}  
     
     for result in results:
         size = result['size']
@@ -212,7 +199,6 @@ def plot_overhead(results):
                         overhead_data[workers] = {}
                     overhead_data[workers][size] = metrics['overhead_percentage']
     
-    # Crear gráfica
     fig, ax = plt.subplots(figsize=(10, 7))
     
     colors = ['#2ecc71', '#f39c12', '#9b59b6', '#1abc9c']
@@ -243,7 +229,6 @@ def plot_phase_breakdown(results):
     """
     Gráfica 5:  Breakdown de tiempos por fase (Map, Shuffle, Reduce)
     """
-    # Tomar el último tamaño de matriz (el más grande)
     last_result = results[-1]
     size = last_result['size']
     
@@ -260,7 +245,6 @@ def plot_phase_breakdown(results):
             shuffle_times.append(metrics.get('shuffle_time', 0))
             reduce_times.append(metrics.get('reduce_time', 0))
     
-    # Crear gráfica de barras apiladas
     fig, ax = plt.subplots(figsize=(10, 7))
     
     x = np.arange(len(workers_list))
@@ -293,15 +277,12 @@ def generate_all_plots(results_file='results/metrics.json'):
     print("GENERANDO GRÁFICAS")
     print("=" * 80)
     
-    # Cargar resultados
     print(f"\nCargando resultados desde:  {results_file}")
     results = load_results(results_file)
     print(f"✓ Cargados {len(results)} conjuntos de resultados")
     
-    # Crear directorio de plots
     os.makedirs('results/plots', exist_ok=True)
     
-    # Generar cada gráfica
     print("\nGenerando gráficas...")
     plot_scalability(results)
     plot_speedup(results)

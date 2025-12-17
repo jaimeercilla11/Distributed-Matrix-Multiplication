@@ -1,4 +1,3 @@
-# distributed_matrix_multiplication.py
 import multiprocessing as mp
 import time
 import psutil
@@ -6,11 +5,6 @@ import os
 from collections import defaultdict
 
 class MapReduceMatrixMultiplier:
-    """
-    Implementación de multiplicación de matrices usando paradigma MapReduce
-    Simula distribución usando multiprocessing
-    """
-    
     def __init__(self, num_workers=4):
         self.num_workers = num_workers
         self.pool = None
@@ -26,30 +20,18 @@ class MapReduceMatrixMultiplier:
     
     @staticmethod
     def map_worker(args):
-        """
-        MAP PHASE: Cada worker procesa un bloque de filas de la matriz A
-        Args: 
-            args: (A_block, B, block_id, start_row)
-        Returns:
-            Lista de tuplas ((i, j), valor_parcial)
-        """
         A_block, B, block_id, start_row = args
         results = []
         
         for local_i, row_A in enumerate(A_block):
             global_i = start_row + local_i
             for j in range(len(B[0])):
-                # Producto punto de fila A con columna j de B
                 partial_sum = sum(row_A[k] * B[k][j] for k in range(len(row_A)))
                 results.append(((global_i, j), partial_sum))
         
         return results
     
     def shuffle_phase(self, map_results):
-        """
-        SHUFFLE PHASE: Reorganiza resultados intermedios por clave (i, j)
-        En un sistema distribuido real, esto implicaría transferencia de red
-        """
         shuffled = defaultdict(list)
         
         for result_list in map_results:
@@ -60,42 +42,20 @@ class MapReduceMatrixMultiplier:
     
     @staticmethod
     def reduce_worker(args):
-        """
-        REDUCE PHASE: Suma todos los valores parciales para cada posición (i,j)
-        Args:
-            args: (key, values) donde key es (i,j) y values es lista de parciales
-        Returns:
-            (key, suma_total)
-        """
         key, values = args
         return (key, sum(values))
     
     def multiply(self, A, B, measure_overhead=True):
-        """
-        Multiplicación completa usando MapReduce
-        
-        Args:
-            A: Matriz A (lista de listas)
-            B: Matriz B (lista de listas)
-            measure_overhead: Si True, mide tiempos de cada fase
-            
-        Returns:
-            C: Matriz resultado
-            metrics:  Diccionario con métricas de rendimiento
-        """
         n = len(A)
         m = len(B[0])
         
-        # Calcular tamaño de bloque por worker
         block_size = max(1, n // self.num_workers)
         
         metrics = {}
         
-        # ==================== MAP PHASE ====================
         if measure_overhead:
             start_map = time.time()
         
-        # Dividir matriz A en bloques (simula distribución de datos)
         map_tasks = []
         for block_id in range(self.num_workers):
             start_row = block_id * block_size
@@ -105,13 +65,11 @@ class MapReduceMatrixMultiplier:
                 A_block = A[start_row:end_row]
                 map_tasks.append((A_block, B, block_id, start_row))
         
-        # Ejecutar MAP en paralelo
         map_results = self.pool.map(self.map_worker, map_tasks)
         
         if measure_overhead:
             metrics['map_time'] = time. time() - start_map
         
-        # ==================== SHUFFLE PHASE ====================
         if measure_overhead:
             start_shuffle = time.time()
         
@@ -120,26 +78,21 @@ class MapReduceMatrixMultiplier:
         if measure_overhead:
             metrics['shuffle_time'] = time.time() - start_shuffle
         
-        # ==================== REDUCE PHASE ====================
         if measure_overhead:
             start_reduce = time.time()
         
-        # Preparar tareas de reduce
         reduce_tasks = list(shuffled.items())
         
-        # Ejecutar REDUCE en paralelo
         reduced_results = self.pool.map(self.reduce_worker, reduce_tasks)
         
         if measure_overhead:
             metrics['reduce_time'] = time.time() - start_reduce
         
-        # ==================== RECONSTRUIR MATRIZ ====================
         C = [[0.0 for _ in range(m)] for _ in range(n)]
         
         for (i, j), value in reduced_results:
             C[i][j] = value
         
-        # Calcular métricas adicionales
         if measure_overhead:
             metrics['total_time'] = sum([
                 metrics['map_time'],
@@ -155,11 +108,6 @@ class MapReduceMatrixMultiplier:
         return C, metrics
 
 class ParallelMatrixMultiplier:
-    """
-    Implementación paralela usando multiprocessing.Pool
-    Divide las filas de la matriz A entre múltiples procesos
-    """
-    
     def __init__(self, num_workers=4):
         self.num_workers = num_workers
         self.pool = None
@@ -175,13 +123,6 @@ class ParallelMatrixMultiplier:
     
     @staticmethod
     def multiply_row_block(args):
-        """
-        Multiplica un bloque de filas de A por toda la matriz B
-        Args:
-            args: (A_block, B, start_row)
-        Returns:
-            Lista de tuplas ((i, j), valor)
-        """
         A_block, B, start_row = args
         results = []
         
@@ -196,23 +137,11 @@ class ParallelMatrixMultiplier:
         return results
     
     def multiply(self, A, B):
-        """
-        Multiplicación paralela simple
-        
-        Args:
-            A:  Matriz A (lista de listas)
-            B: Matriz B (lista de listas)
-            
-        Returns:
-            C: Matriz resultado
-            metrics: Diccionario con métricas
-        """
         n = len(A)
         m = len(B[0])
         
         start_time = time.time()
         
-        # Dividir matriz A en bloques de filas
         block_size = max(1, n // self.num_workers)
         
         tasks = []
@@ -224,10 +153,8 @@ class ParallelMatrixMultiplier:
                 A_block = A[start_row:end_row]
                 tasks.append((A_block, B, start_row))
         
-        # Ejecutar en paralelo
         results = self. pool.map(self.multiply_row_block, tasks)
         
-        # Reconstruir matriz
         C = [[0.0 for _ in range(m)] for _ in range(n)]
         
         for block_result in results:
@@ -239,10 +166,6 @@ class ParallelMatrixMultiplier:
         return C, {'total_time': total_time}
 
 class BasicMatrixMultiplier:
-    """
-    Implementación básica (secuencial) para comparación
-    """
-    
     @staticmethod
     def multiply(A, B):
         """Multiplicación básica O(n³) - método ijk"""
@@ -265,14 +188,8 @@ class BasicMatrixMultiplier:
 
 
 class OptimizedMatrixMultiplier: 
-    """
-    Implementación optimizada (cache-friendly) para comparación
-    Basado en tu TASK-2
-    """
-    
     @staticmethod
     def multiply(A, B):
-        """Multiplicación optimizada - método ikj (cache-friendly)"""
         n = len(A)
         m = len(B[0])
         
@@ -292,14 +209,12 @@ class OptimizedMatrixMultiplier:
 
 
 def create_matrix(n, m=None, value=1.0):
-    """Crea una matriz n×m con un valor constante"""
     if m is None:
         m = n
     return [[value for _ in range(m)] for _ in range(n)]
 
 
 def create_random_matrix(n, m=None, min_val=0.0, max_val=10.0):
-    """Crea una matriz n×m con valores aleatorios"""
     import random
     if m is None: 
         m = n
@@ -307,13 +222,11 @@ def create_random_matrix(n, m=None, min_val=0.0, max_val=10.0):
 
 
 def measure_memory():
-    """Mide el uso de memoria del proceso actual"""
     process = psutil.Process(os. getpid())
     return process.memory_info().rss / (1024 * 1024)  # MB
 
 
 if __name__ == "__main__": 
-    # Test rápido
     print("=" * 80)
     print("TEST RÁPIDO - MapReduce Matrix Multiplication")
     print("=" * 80)
@@ -323,7 +236,6 @@ if __name__ == "__main__":
     A = create_matrix(size, value=2.0)
     B = create_matrix(size, value=3.0)
     
-    # Test con 4 workers
     print("\nEjecutando MapReduce con 4 workers...")
     with MapReduceMatrixMultiplier(num_workers=4) as multiplier:
         C, metrics = multiplier.multiply(A, B)
@@ -335,7 +247,6 @@ if __name__ == "__main__":
     print(f"  Total time:       {metrics['total_time']:.4f}s")
     print(f"  Overhead:         {metrics['overhead_percentage']:.2f}%")
     
-    # Verificar resultado (debe ser 6. 0 * size en cada celda)
     expected = 6.0 * size
     print(f"\n  Verificación: C[0][0] = {C[0][0]:.2f} (esperado: {expected:.2f})")
     print(f"  ✓ Correcto" if abs(C[0][0] - expected) < 0.01 else "  ✗ Error")

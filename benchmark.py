@@ -1,4 +1,3 @@
-# benchmark.py
 import time
 import json
 import os
@@ -15,29 +14,15 @@ from destributed_matrix_multiplication import (
 )
 
 def benchmark_single_test(multiplier_class, A, B, num_workers=None, name="Test"):
-    """
-    Ejecuta un benchmark individual
-    
-    Args:
-        multiplier_class: Clase del multiplicador a usar
-        A, B: Matrices de entrada
-        num_workers:  Número de workers (solo para MapReduce)
-        name: Nombre del test
-    
-    Returns:
-        Diccionario con resultados
-    """
     print(f"\n  Ejecutando {name}...")
     
     mem_before = measure_memory()
     start_time = time.time()
     
     if num_workers is not None:
-        # MapReduce
         with multiplier_class(num_workers=num_workers) as mult:
             C, metrics = mult.multiply(A, B)
     else:
-        # Básico u Optimizado
         mult = multiplier_class()
         C, metrics = mult.multiply(A, B)
     
@@ -61,16 +46,6 @@ def benchmark_single_test(multiplier_class, A, B, num_workers=None, name="Test")
 
 
 def benchmark_matrix_size(size, workers_list=[1, 2, 4, 8]):
-    """
-    Benchmarks completos para un tamaño de matriz
-    
-    Args:
-        size:  Tamaño de la matriz (n×n)
-        workers_list:  Lista de números de workers a probar
-    
-    Returns:
-        Diccionario con todos los resultados
-    """
     print(f"\n{'=' * 80}")
     print(f"BENCHMARK - Matrices {size}×{size}")
     print(f"{'=' * 80}")
@@ -84,7 +59,6 @@ def benchmark_matrix_size(size, workers_list=[1, 2, 4, 8]):
         'tests': []
     }
     
-    # 1. Básico (de TASK-1)
     basic_result = benchmark_single_test(
         BasicMatrixMultiplier, A, B,
         name="Básico (secuencial)"
@@ -92,14 +66,12 @@ def benchmark_matrix_size(size, workers_list=[1, 2, 4, 8]):
     results['tests'].append(basic_result)
     baseline_time = basic_result['total_time']
     
-    # 2. Optimizado (de TASK-2)
     optimized_result = benchmark_single_test(
         OptimizedMatrixMultiplier, A, B,
         name="Optimizado (cache-friendly)"
     )
     results['tests'].append(optimized_result)
     
-    # 3. Paralelo con diferentes números de workers
     for num_workers in workers_list: 
         parallel_result = benchmark_single_test(
             ParallelMatrixMultiplier, A, B,
@@ -107,13 +79,11 @@ def benchmark_matrix_size(size, workers_list=[1, 2, 4, 8]):
             name=f"Paralelo ({num_workers} workers)"
         )
         
-        # Calcular speedup y efficiency
         parallel_result['speedup'] = baseline_time / parallel_result['total_time']
         parallel_result['efficiency'] = parallel_result['speedup'] / num_workers
         
         results['tests'].append(parallel_result)
     
-    # 4. MapReduce con diferentes números de workers
     for num_workers in workers_list: 
         mapreduce_result = benchmark_single_test(
             MapReduceMatrixMultiplier, A, B,
@@ -121,7 +91,6 @@ def benchmark_matrix_size(size, workers_list=[1, 2, 4, 8]):
             name=f"MapReduce ({num_workers} workers)"
         )
         
-        # Calcular speedup y efficiency
         mapreduce_result['speedup'] = baseline_time / mapreduce_result['total_time']
         mapreduce_result['efficiency'] = mapreduce_result['speedup'] / num_workers
         
@@ -131,13 +100,6 @@ def benchmark_matrix_size(size, workers_list=[1, 2, 4, 8]):
 
 
 def run_full_benchmark(sizes=[128, 256, 512, 1024], workers_list=[1, 2, 4, 8]):
-    """
-    Ejecuta el benchmark completo para todos los tamaños
-    
-    Args:
-        sizes: Lista de tamaños de matriz a probar
-        workers_list:  Lista de números de workers
-    """
     print("=" * 80)
     print("BENCHMARK COMPLETO - Distributed Matrix Multiplication")
     print("=" * 80)
@@ -152,14 +114,13 @@ def run_full_benchmark(sizes=[128, 256, 512, 1024], workers_list=[1, 2, 4, 8]):
             results = benchmark_matrix_size(size, workers_list)
             all_results.append(results)
         except KeyboardInterrupt:
-            print("\n\n⚠️  Interrumpido por el usuario")
+            print("\n\nInterrumpido por el usuario")
             break
         except Exception as e:
-            print(f"\n⚠️  Error con tamaño {size}: {e}")
+            print(f"\nError con tamaño {size}: {e}")
             import traceback
             traceback.print_exc()
     
-    # Guardar resultados
     if all_results:
         save_results(all_results)
         print_summary(all_results)
@@ -204,18 +165,15 @@ def print_summary(all_results):
 
 
 if __name__ == "__main__":
-    # Configuración del benchmark
-    SIZES = [128, 256, 512, 1024]  # Tamaños de matriz
-    WORKERS = [1, 2, 4, 8]          # Números de workers
+    SIZES = [128, 256, 512, 1024]  
+    WORKERS = [1, 2, 4, 8]     
     
-    # Si tienes menos cores, ajusta: 
     max_cores = psutil.cpu_count()
     WORKERS = [w for w in WORKERS if w <= max_cores]
     
     print(f"\nCores disponibles: {max_cores}")
     print(f"Workers a usar: {WORKERS}")
     
-    # Ejecutar benchmark
     results = run_full_benchmark(sizes=SIZES, workers_list=WORKERS)
     
     print("\n✓ BENCHMARK COMPLETADO")
