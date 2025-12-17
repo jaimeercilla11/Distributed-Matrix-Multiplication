@@ -226,29 +226,32 @@ def measure_memory():
     return process.memory_info().rss / (1024 * 1024)  # MB
 
 
-if __name__ == "__main__": 
+if __name__ == "__main__":   
+    # Quick test
     print("=" * 80)
-    print("TEST RÁPIDO - MapReduce Matrix Multiplication")
+    print("QUICK TEST - MapReduce Matrix Multiplication")
     print("=" * 80)
     
     size = 128
-    print(f"\nCreando matrices {size}×{size}...")
-    A = create_matrix(size, value=2.0)
+    print(f"\nCreating {size}×{size} matrices...")
+    A = create_matrix(size, value=2. 0)
     B = create_matrix(size, value=3.0)
     
-    print("\nEjecutando MapReduce con 4 workers...")
+    # Test with 4 workers
+    print("\nExecuting MapReduce with 4 workers...")
     with MapReduceMatrixMultiplier(num_workers=4) as multiplier:
         C, metrics = multiplier.multiply(A, B)
     
-    print("\nResultados:")
-    print(f"  Map time:         {metrics['map_time']:.4f}s")
-    print(f"  Shuffle time:    {metrics['shuffle_time']:.4f}s")
-    print(f"  Reduce time:      {metrics['reduce_time']:.4f}s")
-    print(f"  Total time:       {metrics['total_time']:.4f}s")
+    print("\nResults:")
+    print(f"  Map time:          {metrics['map_time']:. 4f}s")
+    print(f"  Shuffle time:     {metrics['shuffle_time']:. 4f}s")
+    print(f"  Reduce time:       {metrics['reduce_time']:.4f}s")
+    print(f"  Total time:        {metrics['total_time']:. 4f}s")
     print(f"  Overhead:         {metrics['overhead_percentage']:.2f}%")
     
+    # Verify result (should be 6.0 * size in each cell)
     expected = 6.0 * size
-    print(f"\n  Verificación: C[0][0] = {C[0][0]:.2f} (esperado: {expected:.2f})")
-    print(f"  ✓ Correcto" if abs(C[0][0] - expected) < 0.01 else "  ✗ Error")
+    print(f"\n  Verification:  C[0][0] = {C[0][0]:.2f} (expected:  {expected:.2f})")
+    print(f"  ✓ Correct" if abs(C[0][0] - expected) < 0.01 else "  ✗ Error")
     
     print("\n" + "=" * 80)

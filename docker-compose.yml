@@ -1,20 +1,18 @@
-version: '3.8'
-
-services:
+﻿services:
   test:
     build: 
       context: .
       dockerfile: Dockerfile
     container_name: matrix-test
-    volumes:
+    volumes: 
       - ./results:/app/results
-    environment: 
+    environment:
       - PYTHONUNBUFFERED=1
-    command:  python destributed_matrix_multiplication.py
+    command: ["python", "distributed_matrix_multiplication.py"]
     profiles:
       - test
 
-  benchmark:
+  benchmark: 
     build: 
       context: .
       dockerfile: Dockerfile
@@ -23,36 +21,18 @@ services:
       - ./results:/app/results
     environment:
       - PYTHONUNBUFFERED=1
-    command: python benchmark. py
-    profiles:
-      - full
+    command: ["python", "benchmark.py"]
 
-  report: 
-    build:
-      context: . 
+  report:
+    build: 
+      context: .
       dockerfile: Dockerfile
-    container_name: matrix-report
-    volumes:
-      - ./results:/app/results
-    environment: 
-      - PYTHONUNBUFFERED=1
-      - MPLBACKEND=Agg
-    command: python generate_report. py
-    depends_on:
-      benchmark:
-        condition: service_completed_successfully
-    profiles:
-      - full
-
-  pipeline:
-    build:
-      context:  .
-      dockerfile: Dockerfile
-    container_name: matrix-pipeline
-    volumes:
+    container_name:  matrix-report
+    volumes: 
       - ./results:/app/results
     environment:
       - PYTHONUNBUFFERED=1
-      - MPLBACKEND=Agg
-    command: >
-      sh -c "python benchmark.py && python generate_report.py"
+    command: ["python", "generate_report.py"]
+    depends_on:
+      benchmark: 
+        condition: service_completed_successfully
