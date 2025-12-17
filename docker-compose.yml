@@ -1,0 +1,62 @@
+version: '3.8'
+
+services:
+  # Test rápido
+  test:
+    build: 
+      context: .
+      dockerfile: Dockerfile
+    container_name: matrix-test
+    volumes:
+      - ./results:/app/results
+    environment: 
+      - PYTHONUNBUFFERED=1
+    command:  python destributed_matrix_multiplication.py
+    profiles:
+      - test
+
+  # Benchmark completo
+  benchmark:
+    build: 
+      context: .
+      dockerfile: Dockerfile
+    container_name: matrix-benchmark
+    volumes: 
+      - ./results:/app/results
+    environment:
+      - PYTHONUNBUFFERED=1
+    command: python benchmark. py
+    profiles:
+      - full
+
+  # Generación de reportes
+  report: 
+    build:
+      context: . 
+      dockerfile: Dockerfile
+    container_name: matrix-report
+    volumes:
+      - ./results:/app/results
+    environment: 
+      - PYTHONUNBUFFERED=1
+      - MPLBACKEND=Agg
+    command: python generate_report. py
+    depends_on:
+      benchmark:
+        condition: service_completed_successfully
+    profiles:
+      - full
+
+  # Pipeline completo (benchmark + report)
+  pipeline:
+    build:
+      context:  .
+      dockerfile: Dockerfile
+    container_name: matrix-pipeline
+    volumes:
+      - ./results:/app/results
+    environment:
+      - PYTHONUNBUFFERED=1
+      - MPLBACKEND=Agg
+    command: >
+      sh -c "python benchmark.py && python generate_report.py"
