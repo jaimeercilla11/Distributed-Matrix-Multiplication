@@ -243,10 +243,10 @@ if __name__ == "__main__":
         C, metrics = multiplier.multiply(A, B)
     
     print("\nResults:")
-    print(f"  Map time:          {metrics['map_time']:. 4f}s")
-    print(f"  Shuffle time:     {metrics['shuffle_time']:. 4f}s")
+    print(f"  Map time:          {metrics['map_time']:.4f}s")
+    print(f"  Shuffle time:     {metrics['shuffle_time']:.4f}s")
     print(f"  Reduce time:       {metrics['reduce_time']:.4f}s")
-    print(f"  Total time:        {metrics['total_time']:. 4f}s")
+    print(f"  Total time:        {metrics['total_time']:.4f}s")
     print(f"  Overhead:         {metrics['overhead_percentage']:.2f}%")
     
     # Verify result (should be 6.0 * size in each cell)
