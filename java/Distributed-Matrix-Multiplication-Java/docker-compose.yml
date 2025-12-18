@@ -1,0 +1,12 @@
+﻿services:
+  benchmark: 
+    build: 
+      context: .
+      dockerfile: Dockerfile
+    container_name: matrix-benchmark-java
+    volumes:
+      - ./results:/app/results
+    environment:
+      - JAVA_OPTS=-Xmx4g -Xms2g
+    mem_limit: 6g
+    cpus: 8
