@@ -4,46 +4,46 @@
       {
         "name": "Basic (sequential)",
         "memory_mb": 0.1209869384765625,
-        "total_time": 0.013840839,
+        "total_time": 0.010394299,
         "num_workers": 1
       },
       {
         "name": "Optimized (cache-friendly)",
-        "speedup": 1.4695507683617681,
+        "speedup": 1.1307057853071871,
         "memory_mb": 0.241485595703125,
-        "total_time": 0.009418415,
+        "total_time": 0.009192753,
         "num_workers": 1
       },
       {
-        "efficiency": 0.024549225456187374,
+        "efficiency": 0.03951919172628041,
         "name": "Hazelcast (1 workers)",
-        "speedup": 0.024549225456187374,
-        "memory_mb": 9.605125427246094,
-        "total_time": 0.563799417,
+        "speedup": 0.03951919172628041,
+        "memory_mb": 12.349372863769531,
+        "total_time": 0.263019018,
         "num_workers": 1
       },
       {
-        "efficiency": 0.22096556032639106,
+        "efficiency": 0.16357110617310044,
         "name": "Hazelcast (2 workers)",
-        "speedup": 0.4419311206527821,
-        "memory_mb": 2.7142715454101562,
-        "total_time": 0.031318996,
+        "speedup": 0.3271422123462009,
+        "memory_mb": 2.6417770385742188,
+        "total_time": 0.031773029,
         "num_workers": 2
       },
       {
-        "efficiency": 0.12015626416677151,
+        "efficiency": 0.10998014319819574,
         "name": "Hazelcast (4 workers)",
-        "speedup": 0.48062505666708605,
-        "memory_mb": 3.3420944213867188,
-        "total_time": 0.028797581,
+        "speedup": 0.43992057279278296,
+        "memory_mb": 3.41766357421875,
+        "total_time": 0.023627672,
         "num_workers": 4
       },
       {
-        "efficiency": 0.061813140877221076,
+        "efficiency": 0.06327686955429138,
         "name": "Hazelcast (8 workers)",
-        "speedup": 0.4945051270177686,
-        "memory_mb": 4.587455749511719,
-        "total_time": 0.027989273,
+        "speedup": 0.506214956434331,
+        "memory_mb": 4.498016357421875,
+        "total_time": 0.02053337,
         "num_workers": 8
       }
     ],
@@ -53,47 +53,47 @@
     "tests": [
       {
         "name": "Basic (sequential)",
-        "memory_mb": 0.6196136474609375,
-        "total_time": 0.032062835,
+        "memory_mb": 0.565948486328125,
+        "total_time": 0.027157441,
         "num_workers": 1
       },
       {
         "name": "Optimized (cache-friendly)",
-        "speedup": 1.5561530851331697,
-        "memory_mb": 0.6196136474609375,
-        "total_time": 0.020603908,
+        "speedup": 1.368181916422103,
+        "memory_mb": 0.603240966796875,
+        "total_time": 0.019849291,
         "num_workers": 1
       },
       {
-        "efficiency": 0.36159115316334844,
+        "efficiency": 0.4434291655658132,
         "name": "Hazelcast (1 workers)",
-        "speedup": 0.36159115316334844,
-        "memory_mb": 10.645828247070312,
-        "total_time": 0.088671514,
+        "speedup": 0.4434291655658132,
+        "memory_mb": 10.218818664550781,
+        "total_time": 0.061244147,
         "num_workers": 1
       },
       {
-        "efficiency": 0.35220780162914767,
+        "efficiency": 0.30334154376211264,
         "name": "Hazelcast (2 workers)",
-        "speedup": 0.7044156032582953,
-        "memory_mb": 11.751800537109375,
-        "total_time": 0.045516929,
+        "speedup": 0.6066830875242253,
+        "memory_mb": 11.985221862792969,
+        "total_time": 0.044763801,
         "num_workers": 2
       },
       {
-        "efficiency": 0.17446144552523105,
+        "efficiency": 0.1260978136887673,
         "name": "Hazelcast (4 workers)",
-        "speedup": 0.6978457821009242,
-        "memory_mb": 12.973678588867188,
-        "total_time": 0.045945445,
+        "speedup": 0.5043912547550692,
+        "memory_mb": 14.257949829101562,
+        "total_time": 0.053842014,
         "num_workers": 4
       },
       {
-        "efficiency": 0.05580546531356146,
+        "efficiency": 0.0662273501848366,
         "name": "Hazelcast (8 workers)",
-        "speedup": 0.4464437225084917,
-        "memory_mb": 17.472671508789062,
-        "total_time": 0.071818313,
+        "speedup": 0.5298188014786928,
+        "memory_mb": 18.368545532226562,
+        "total_time": 0.051257979,
         "num_workers": 8
       }
     ],
@@ -103,47 +103,47 @@
     "tests": [
       {
         "name": "Basic (sequential)",
-        "memory_mb": 2.1059646606445312,
-        "total_time": 0.411354602,
+        "memory_mb": 2.1590194702148438,
+        "total_time": 0.278026188,
         "num_workers": 1
       },
       {
         "name": "Optimized (cache-friendly)",
-        "speedup": 17.08551859524093,
-        "memory_mb": 2.1412811279296875,
-        "total_time": 0.024076214,
+        "speedup": 7.473973746672177,
+        "memory_mb": 2.190704345703125,
+        "total_time": 0.037199246,
         "num_workers": 1
       },
       {
-        "efficiency": 1.0783273773680766,
+        "efficiency": 0.6961568856209622,
         "name": "Hazelcast (1 workers)",
-        "speedup": 1.0783273773680766,
-        "memory_mb": 14.045211791992188,
-        "total_time": 0.38147469,
+        "speedup": 0.6961568856209622,
+        "memory_mb": 14.196525573730469,
+        "total_time": 0.399372891,
         "num_workers": 1
       },
       {
-        "efficiency": 0.6491395950157822,
+        "efficiency": 0.4828990665175828,
         "name": "Hazelcast (2 workers)",
-        "speedup": 1.2982791900315644,
-        "memory_mb": 18.29692840576172,
-        "total_time": 0.316846026,
+        "speedup": 0.9657981330351656,
+        "memory_mb": 18.26811981201172,
+        "total_time": 0.287871946,
         "num_workers": 2
       },
       {
-        "efficiency": 0.33898681530332614,
+        "efficiency": 0.2863824345226714,
         "name": "Hazelcast (4 workers)",
-        "speedup": 1.3559472612133046,
-        "memory_mb": 26.401351928710938,
-        "total_time": 0.30337065,
+        "speedup": 1.1455297380906857,
+        "memory_mb": 26.098007202148438,
+        "total_time": 0.242705343,
         "num_workers": 4
       },
       {
-        "efficiency": 0.17587283271684226,
+        "efficiency": 0.16287097288543714,
         "name": "Hazelcast (8 workers)",
-        "speedup": 1.406982661734738,
-        "memory_mb": 42.64286804199219,
-        "total_time": 0.292366504,
+        "speedup": 1.3029677830834971,
+        "memory_mb": 42.668190002441406,
+        "total_time": 0.213379173,
         "num_workers": 8
       }
     ],
@@ -153,47 +153,47 @@
     "tests": [
       {
         "name": "Basic (sequential)",
-        "memory_mb": 8.335968017578125,
-        "total_time": 8.353847808,
+        "memory_mb": 8.283096313476562,
+        "total_time": 6.780713292,
         "num_workers": 1
       },
       {
         "name": "Optimized (cache-friendly)",
-        "speedup": 10.101123664074398,
-        "memory_mb": 8.126052856445312,
-        "total_time": 0.827021635,
+        "speedup": 9.619349975065097,
+        "memory_mb": 8.277046203613281,
+        "total_time": 0.704903482,
         "num_workers": 1
       },
       {
-        "efficiency": 1.1021967670992443,
+        "efficiency": 0.7516526603598881,
         "name": "Hazelcast (1 workers)",
-        "speedup": 1.1021967670992443,
-        "memory_mb": 50.97956848144531,
-        "total_time": 7.579270832,
+        "speedup": 0.7516526603598881,
+        "memory_mb": 50.77742004394531,
+        "total_time": 9.021072697,
         "num_workers": 1
       },
       {
-        "efficiency": 0.7922812472051163,
+        "efficiency": 0.6173676992969016,
         "name": "Hazelcast (2 workers)",
-        "speedup": 1.5845624944102326,
-        "memory_mb": 66.87030792236328,
-        "total_time": 5.27202167,
+        "speedup": 1.2347353985938032,
+        "memory_mb": 66.96733093261719,
+        "total_time": 5.491632701,
         "num_workers": 2
       },
       {
-        "efficiency": 0.5908761914931328,
+        "efficiency": 0.4345113525640929,
         "name": "Hazelcast (4 workers)",
-        "speedup": 2.363504765972531,
-        "memory_mb": 99.92889404296875,
-        "total_time": 3.534517014,
+        "speedup": 1.7380454102563716,
+        "memory_mb": 99.54835510253906,
+        "total_time": 3.901344149,
         "num_workers": 4
       },
       {
-        "efficiency": 0.20051574611019166,
+        "efficiency": 0.22905795299310894,
         "name": "Hazelcast (8 workers)",
-        "speedup": 1.6041259688815332,
-        "memory_mb": 165.20883178710938,
-        "total_time": 5.207725559,
+        "speedup": 1.8324636239448715,
+        "memory_mb": 164.5254669189453,
+        "total_time": 3.700326273,
         "num_workers": 8
       }
     ],
