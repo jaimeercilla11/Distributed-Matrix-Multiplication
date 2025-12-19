@@ -141,10 +141,10 @@ def print_summary(all_results):
             time_val = test['total_time']
             speedup = baseline / time_val
             
-            efficiency = test. get('efficiency', speedup)
+            efficiency = test.get('efficiency', speedup)
             efficiency_str = f"{efficiency:.2%}" if 'num_workers' in test else "-"
             
-            print(f"{size:<10} {name:<30} {time_val:<12.4f} {speedup:<10. 2f}x {efficiency_str:<12}")
+            print(f"{size:<10} {name:<30} {time_val:<12.4f} {speedup:<10.2f}x {efficiency_str:<12}")
         
         print()
 
