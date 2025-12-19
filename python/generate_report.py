@@ -4,16 +4,13 @@ import numpy as np
 import os
 
 def load_results(filename='results/metrics.json'):
-    """Carga los resultados del benchmark"""
     with open(filename, 'r') as f:
         return json. load(f)
 
 
 def plot_scalability(results):
-    """Gráfica de escalabilidad:  tiempo vs tamaño de matriz"""
     sizes = [r['size'] for r in results]
     
-    # Extraer tiempos de cada método
     basic_times = []
     numpy_times = []
     ray_times = {1: [], 2: [], 4: [], 8: []}
@@ -21,7 +18,6 @@ def plot_scalability(results):
     for result in results: 
         tests = result['tests']
         
-        # Buscar tiempos por nombre
         for test in tests: 
             name = test['name']
             time_val = test['total_time']
@@ -31,12 +27,10 @@ def plot_scalability(results):
             elif 'NumPy' in name or 'optimizado' in name:
                 numpy_times.append(time_val)
             elif 'Ray' in name: 
-                # Extraer número de workers
                 workers = test. get('num_workers', 1)
                 if workers in ray_times:
                     ray_times[workers].append(time_val)
     
-    # Crear gráfica
     fig, ax = plt.subplots(figsize=(10, 6))
     
     if len(basic_times) == len(sizes):
@@ -63,9 +57,6 @@ def plot_scalability(results):
     plt.close()
 
 def plot_speedup(results):
-    """
-    Gráfica 2: Speedup vs Number of Workers
-    """
     sizes = [r['size'] for r in results]
     
     speedup_data = {}
