@@ -13,29 +13,15 @@ from distributed_matrix_multiplication import (
 )
 
 def benchmark_single_test(multiplier_class, A, B, num_workers=None, name="Test"):
-    """
-    Execute a single benchmark
-    
-    Args:
-        multiplier_class:  Multiplier class to use
-        A, B: Input matrices
-        num_workers: Number of workers (MapReduce only)
-        name: Test name
-    
-    Returns:
-        Dictionary with results
-    """
     print(f"\n  Executing {name}...")
     
     mem_before = measure_memory()
     start_time = time.time()
     
     if num_workers is not None:
-        # MapReduce
         with multiplier_class(num_workers=num_workers) as mult:
             C, metrics = mult.multiply(A, B)
     else:
-        # Basic or Optimized
         mult = multiplier_class()
         C, metrics = mult.multiply(A, B)
     
@@ -59,16 +45,6 @@ def benchmark_single_test(multiplier_class, A, B, num_workers=None, name="Test")
 
 
 def benchmark_matrix_size(size, workers_list=[1, 2, 4, 8]):
-    """
-    Complete benchmarks for a matrix size
-    
-    Args: 
-        size: Matrix size (n×n)
-        workers_list: List of worker counts to test
-    
-    Returns:  
-        Dictionary with all results
-    """
     print(f"\n{'=' * 80}")
     print(f"BENCHMARK - {size}×{size} Matrices")
     print(f"{'=' * 80}")
@@ -82,7 +58,6 @@ def benchmark_matrix_size(size, workers_list=[1, 2, 4, 8]):
         'tests': []
     }
     
-    # 1. Basic (from TASK-1)
     basic_result = benchmark_single_test(
         BasicMatrixMultiplier, A, B,
         name="Basic (sequential)"
@@ -90,14 +65,12 @@ def benchmark_matrix_size(size, workers_list=[1, 2, 4, 8]):
     results['tests'].append(basic_result)
     baseline_time = basic_result['total_time']
     
-    # 2. Optimized (from TASK-2)
     optimized_result = benchmark_single_test(
         OptimizedMatrixMultiplier, A, B,
         name="Optimized (cache-friendly)"
     )
     results['tests'].append(optimized_result)
     
-    # 3. MapReduce with different worker counts
     for num_workers in workers_list: 
         mapreduce_result = benchmark_single_test(
             MapReduceMatrixMultiplier, A, B,
@@ -105,7 +78,6 @@ def benchmark_matrix_size(size, workers_list=[1, 2, 4, 8]):
             name=f"MapReduce ({num_workers} workers)"
         )
         
-        # Calculate speedup and efficiency
         mapreduce_result['speedup'] = baseline_time / mapreduce_result['total_time']
         mapreduce_result['efficiency'] = mapreduce_result['speedup'] / num_workers
         
@@ -115,13 +87,6 @@ def benchmark_matrix_size(size, workers_list=[1, 2, 4, 8]):
 
 
 def run_full_benchmark(sizes=[128, 256, 512, 1024], workers_list=[1, 2, 4, 8]):
-    """
-    Execute complete benchmark for all sizes
-    
-    Args:
-        sizes: List of matrix sizes to test
-        workers_list: List of worker counts
-    """
     print("=" * 80)
     print("COMPLETE BENCHMARK - Distributed Matrix Multiplication")
     print("=" * 80)
@@ -143,7 +108,6 @@ def run_full_benchmark(sizes=[128, 256, 512, 1024], workers_list=[1, 2, 4, 8]):
             import traceback
             traceback.print_exc()
     
-    # Save results
     if all_results:
         save_results(all_results)
         print_summary(all_results)
@@ -152,7 +116,6 @@ def run_full_benchmark(sizes=[128, 256, 512, 1024], workers_list=[1, 2, 4, 8]):
 
 
 def save_results(results, filename='results/metrics.json'):
-    """Save results in JSON format"""
     os.makedirs('results', exist_ok=True)
     
     with open(filename, 'w') as f:
@@ -162,7 +125,6 @@ def save_results(results, filename='results/metrics.json'):
 
 
 def print_summary(all_results):
-    """Print summary of all results"""
     print("\n" + "=" * 80)
     print("GENERAL SUMMARY")
     print("=" * 80)
@@ -188,18 +150,15 @@ def print_summary(all_results):
 
 
 if __name__ == "__main__":
-    # Benchmark configuration
-    SIZES = [128, 256, 512, 1024]  # Matrix sizes
-    WORKERS = [1, 2, 4, 8]          # Worker counts
+    SIZES = [128, 256, 512, 1024]  
+    WORKERS = [1, 2, 4, 8]          
     
-    # Adjust if you have fewer cores
     max_cores = psutil.cpu_count()
     WORKERS = [w for w in WORKERS if w <= max_cores]
     
     print(f"\nAvailable cores: {max_cores}")
     print(f"Workers to use: {WORKERS}")
     
-    # Execute benchmark
     results = run_full_benchmark(sizes=SIZES, workers_list=WORKERS)
     
     print("\n✓ BENCHMARK COMPLETED")

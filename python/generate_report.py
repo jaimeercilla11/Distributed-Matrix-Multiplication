@@ -305,9 +305,9 @@ if __name__ == "__main__":
     try:
         generate_all_plots()
     except FileNotFoundError:
-        print("\n❌ Error: No se encontró el archivo results/metrics.json")
+        print("\nError: No se encontró el archivo results/metrics.json")
         print("Primero debes ejecutar:  python benchmark.py")
     except Exception as e:
-        print(f"\n❌ Error: {e}")
+        print(f"\nError: {e}")
         import traceback
         traceback.print_exc()

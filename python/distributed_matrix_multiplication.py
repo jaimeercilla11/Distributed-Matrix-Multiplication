@@ -227,17 +227,15 @@ def measure_memory():
 
 
 if __name__ == "__main__":   
-    # Quick test
     print("=" * 80)
     print("QUICK TEST - MapReduce Matrix Multiplication")
     print("=" * 80)
     
     size = 128
     print(f"\nCreating {size}×{size} matrices...")
-    A = create_matrix(size, value=2. 0)
+    A = create_matrix(size, value=2.0)
     B = create_matrix(size, value=3.0)
     
-    # Test with 4 workers
     print("\nExecuting MapReduce with 4 workers...")
     with MapReduceMatrixMultiplier(num_workers=4) as multiplier:
         C, metrics = multiplier.multiply(A, B)
@@ -249,7 +247,6 @@ if __name__ == "__main__":
     print(f"  Total time:        {metrics['total_time']:.4f}s")
     print(f"  Overhead:         {metrics['overhead_percentage']:.2f}%")
     
-    # Verify result (should be 6.0 * size in each cell)
     expected = 6.0 * size
     print(f"\n  Verification:  C[0][0] = {C[0][0]:.2f} (expected:  {expected:.2f})")
     print(f"  ✓ Correct" if abs(C[0][0] - expected) < 0.01 else "  ✗ Error")
