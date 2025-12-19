@@ -1,0 +1,269 @@
+[
+  {
+    "size": 128,
+    "tests": [
+      {
+        "name": "Basic (sequential)",
+        "total_time": 0.20125555992126465,
+        "memory_mb": 0.63671875,
+        "metrics": {
+          "total_time": 0.20125555992126465
+        }
+      },
+      {
+        "name": "Optimized (cache-friendly)",
+        "total_time": 0.16742396354675293,
+        "memory_mb": 0.0,
+        "metrics": {
+          "total_time": 0.16642117500305176
+        }
+      },
+      {
+        "name": "MapReduce (1 workers)",
+        "total_time": 0.850893497467041,
+        "memory_mb": 11.734375,
+        "metrics": {
+          "map_time": 0.43614959716796875,
+          "shuffle_time": 0.005181789398193359,
+          "reduce_time": 0.03492116928100586,
+          "total_time": 0.47625255584716797,
+          "computation_time": 0.4710707664489746,
+          "communication_overhead": 0.005181789398193359,
+          "overhead_percentage": 1.0880339295976866
+        },
+        "num_workers": 1,
+        "speedup": 0.23652262065742274,
+        "efficiency": 0.23652262065742274
+      },
+      {
+        "name": "MapReduce (2 workers)",
+        "total_time": 0.48023366928100586,
+        "memory_mb": 0.96875,
+        "metrics": {
+          "map_time": 0.34540605545043945,
+          "shuffle_time": 0.005028963088989258,
+          "reduce_time": 0.030467748641967773,
+          "total_time": 0.3809027671813965,
+          "computation_time": 0.3758738040924072,
+          "communication_overhead": 0.005028963088989258,
+          "overhead_percentage": 1.320274758359612
+        },
+        "num_workers": 2,
+        "speedup": 0.41907840452457146,
+        "efficiency": 0.20953920226228573
+      },
+      {
+        "name": "MapReduce (4 workers)",
+        "total_time": 0.4563333988189697,
+        "memory_mb": 0.6796875,
+        "metrics": {
+          "map_time": 0.24542856216430664,
+          "shuffle_time": 0.0040073394775390625,
+          "reduce_time": 0.027747392654418945,
+          "total_time": 0.27718329429626465,
+          "computation_time": 0.2731759548187256,
+          "communication_overhead": 0.0040073394775390625,
+          "overhead_percentage": 1.4457362907505735
+        },
+        "num_workers": 4,
+        "speedup": 0.4410274602782339,
+        "efficiency": 0.11025686506955848
+      },
+      {
+        "name": "MapReduce (8 workers)",
+        "total_time": 0.6498234272003174,
+        "memory_mb": -0.4140625,
+        "metrics": {
+          "map_time": 0.14668631553649902,
+          "shuffle_time": 0.0046007633209228516,
+          "reduce_time": 0.050261497497558594,
+          "total_time": 0.20154857635498047,
+          "computation_time": 0.19694781303405762,
+          "communication_overhead": 0.0046007633209228516,
+          "overhead_percentage": 2.2827069305712624
+        },
+        "num_workers": 8,
+        "speedup": 0.3097080706805985,
+        "efficiency": 0.038713508835074815
+      }
+    ]
+  },
+  {
+    "size": 256,
+    "tests": [
+      {
+        "name": "Basic (sequential)",
+        "total_time": 1.5742151737213135,
+        "memory_mb": -1.71875,
+        "metrics": {
+          "total_time": 1.5716888904571533
+        }
+      },
+      {
+        "name": "Optimized (cache-friendly)",
+        "total_time": 1.3382632732391357,
+        "memory_mb": -0.12890625,
+        "metrics": {
+          "total_time": 1.3372492790222168
+        }
+      },
+      {
+        "name": "MapReduce (1 workers)",
+        "total_time": 2.1144182682037354,
+        "memory_mb": 17.546875,
+        "metrics": {
+          "map_time": 1.8596456050872803,
+          "shuffle_time": 0.03037238121032715,
+          "reduce_time": 0.15510821342468262,
+          "total_time": 2.04512619972229,
+          "computation_time": 2.014753818511963,
+          "communication_overhead": 0.03037238121032715,
+          "overhead_percentage": 1.4851103670008945
+        },
+        "num_workers": 1,
+        "speedup": 0.7445145539054856,
+        "efficiency": 0.7445145539054856
+      },
+      {
+        "name": "MapReduce (2 workers)",
+        "total_time": 1.4654126167297363,
+        "memory_mb": 9.61328125,
+        "metrics": {
+          "map_time": 1.20383882522583,
+          "shuffle_time": 0.032730817794799805,
+          "reduce_time": 0.1164402961730957,
+          "total_time": 1.3530099391937256,
+          "computation_time": 1.3202791213989258,
+          "communication_overhead": 0.032730817794799805,
+          "overhead_percentage": 2.419111408324501
+        },
+        "num_workers": 2,
+        "speedup": 1.0742470453368858,
+        "efficiency": 0.5371235226684429
+      },
+      {
+        "name": "MapReduce (4 workers)",
+        "total_time": 1.1797235012054443,
+        "memory_mb": 7.125,
+        "metrics": {
+          "map_time": 0.8238155841827393,
+          "shuffle_time": 0.028486967086791992,
+          "reduce_time": 0.11284685134887695,
+          "total_time": 0.9651494026184082,
+          "computation_time": 0.9366624355316162,
+          "communication_overhead": 0.028486967086791992,
+          "overhead_percentage": 2.9515603500875716
+        },
+        "num_workers": 4,
+        "speedup": 1.3343933320924577,
+        "efficiency": 0.3335983330231144
+      },
+      {
+        "name": "MapReduce (8 workers)",
+        "total_time": 1.2063634395599365,
+        "memory_mb": 3.1015625,
+        "metrics": {
+          "map_time": 0.6746559143066406,
+          "shuffle_time": 0.030544519424438477,
+          "reduce_time": 0.09689140319824219,
+          "total_time": 0.8020918369293213,
+          "computation_time": 0.7715473175048828,
+          "communication_overhead": 0.030544519424438477,
+          "overhead_percentage": 3.808107503172358
+        },
+        "num_workers": 8,
+        "speedup": 1.304926129306077,
+        "efficiency": 0.16311576616325962
+      }
+    ]
+  },
+  {
+    "size": 512,
+    "tests": [
+      {
+        "name": "Basic (sequential)",
+        "total_time": 12.878158330917358,
+        "memory_mb": -2.34765625,
+        "metrics": {
+          "total_time": 12.86958646774292
+        }
+      },
+      {
+        "name": "Optimized (cache-friendly)",
+        "total_time": 10.831247329711914,
+        "memory_mb": -0.03125,
+        "metrics": {
+          "total_time": 10.824068784713745
+        }
+      },
+      {
+        "name": "MapReduce (1 workers)",
+        "total_time": 17.436723947525024,
+        "memory_mb": 57.5625,
+        "metrics": {
+          "map_time": 16.15805673599243,
+          "shuffle_time": 0.2153322696685791,
+          "reduce_time": 0.9432227611541748,
+          "total_time": 17.316611766815186,
+          "computation_time": 17.101279497146606,
+          "communication_overhead": 0.2153322696685791,
+          "overhead_percentage": 1.2435011685209265
+        },
+        "num_workers": 1,
+        "speedup": 0.7385652470999456,
+        "efficiency": 0.7385652470999456
+      },
+      {
+        "name": "MapReduce (2 workers)",
+        "total_time": 10.80201268196106,
+        "memory_mb": 56.046875,
+        "metrics": {
+          "map_time": 9.718825578689575,
+          "shuffle_time": 0.1967771053314209,
+          "reduce_time": 0.6745638847351074,
+          "total_time": 10.590166568756104,
+          "computation_time": 10.393389463424683,
+          "communication_overhead": 0.1967771053314209,
+          "overhead_percentage": 1.858111523117751
+        },
+        "num_workers": 2,
+        "speedup": 1.1921998899726698,
+        "efficiency": 0.5960999449863349
+      },
+      {
+        "name": "MapReduce (4 workers)",
+        "total_time": 6.739150762557983,
+        "memory_mb": 53.6796875,
+        "metrics": {
+          "map_time": 5.77287220954895,
+          "shuffle_time": 0.19962000846862793,
+          "reduce_time": 0.4843261241912842,
+          "total_time": 6.456818342208862,
+          "computation_time": 6.257198333740234,
+          "communication_overhead": 0.19962000846862793,
+          "overhead_percentage": 3.091615682660485
+        },
+        "num_workers": 4,
+        "speedup": 1.9109467623824443,
+        "efficiency": 0.4777366905956111
+      },
+      {
+        "name": "MapReduce (8 workers)",
+        "total_time": 6.934678554534912,
+        "memory_mb": 51.015625,
+        "metrics": {
+          "map_time": 5.693921804428101,
+          "shuffle_time": 0.21846795082092285,
+          "reduce_time": 0.5137498378753662,
+          "total_time": 6.42613959312439,
+          "computation_time": 6.207671642303467,
+          "communication_overhead": 0.21846795082092285,
+          "overhead_percentage": 3.399676394435492
+        },
+        "num_workers": 8,
+        "speedup": 1.8570663700764798,
+        "efficiency": 0.23213329625955997
+      }
+    ]
+  }
+]
