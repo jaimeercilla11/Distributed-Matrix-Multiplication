@@ -10,74 +10,57 @@ def load_results(filename='results/metrics.json'):
 
 
 def plot_scalability(results):
-    """
-    Gráfica 1: Scalability - Tiempo vs Tamaño de Matriz
-    """
+    """Gráfica de escalabilidad:  tiempo vs tamaño de matriz"""
     sizes = [r['size'] for r in results]
     
+    # Extraer tiempos de cada método
     basic_times = []
-    optimized_times = []
-    parallel_times = {}  
-    mapreduce_times = {}  
+    numpy_times = []
+    ray_times = {1: [], 2: [], 4: [], 8: []}
     
-    for result in results:
-        for test in result['tests']:
+    for result in results: 
+        tests = result['tests']
+        
+        # Buscar tiempos por nombre
+        for test in tests: 
             name = test['name']
             time_val = test['total_time']
             
-            if 'Básico' in name:
+            if 'Basic' in name or 'secuencial' in name:
                 basic_times.append(time_val)
-            elif 'Optimizado' in name:
-                optimized_times.append(time_val)
-            elif 'Paralelo' in name: 
-                workers = test['num_workers']
-                if workers not in parallel_times: 
-                    parallel_times[workers] = []
-                parallel_times[workers].append(time_val)
-            elif 'MapReduce' in name:
-                workers = test['num_workers']
-                if workers not in mapreduce_times:
-                    mapreduce_times[workers] = []
-                mapreduce_times[workers].append(time_val)
+            elif 'NumPy' in name or 'optimizado' in name:
+                numpy_times.append(time_val)
+            elif 'Ray' in name: 
+                # Extraer número de workers
+                workers = test. get('num_workers', 1)
+                if workers in ray_times:
+                    ray_times[workers].append(time_val)
     
-    fig, ax = plt.subplots(figsize=(14, 8))
+    # Crear gráfica
+    fig, ax = plt.subplots(figsize=(10, 6))
     
-    ax.plot(sizes, basic_times, 'o-', label='Básico (secuencial)', 
-            linewidth=2.5, markersize=10, color='#e74c3c')
-    ax.plot(sizes, optimized_times, 's-', label='Optimizado (cache)', 
-            linewidth=2.5, markersize=10, color='#3498db')
+    if len(basic_times) == len(sizes):
+        ax.plot(sizes, basic_times, 'o-', label='Básico (secuencial)', linewidth=2, markersize=8)
     
-    colors_parallel = ['#2ecc71', '#27ae60', '#16a085', '#1abc9c']
-    markers = ['^', 'v', '<', '>']
+    if len(numpy_times) == len(sizes):
+        ax.plot(sizes, numpy_times, 's-', label='NumPy (optimizado)', linewidth=2, markersize=8)
     
-    for idx, (workers, times) in enumerate(sorted(parallel_times.items())):
-        ax.plot(sizes, times, f'{markers[idx]}-', 
-                label=f'Paralelo ({workers} workers)',
-                linewidth=2.5, markersize=10, 
-                color=colors_parallel[idx % len(colors_parallel)])
+    for workers, times in ray_times.items():
+        if len(times) == len(sizes):
+            ax.plot(sizes, times, '^--', label=f'Ray ({workers} workers)', linewidth=2, markersize=8)
     
-    colors_mapreduce = ['#f39c12', '#e67e22', '#d35400', '#e74c3c']
-    markers_mr = ['D', 'p', 'h', '*']
-    
-    for idx, (workers, times) in enumerate(sorted(mapreduce_times. items())):
-        ax.plot(sizes, times, f'{markers_mr[idx]}--', 
-                label=f'MapReduce ({workers} workers)',
-                linewidth=2, markersize=9, 
-                color=colors_mapreduce[idx % len(colors_mapreduce)],
-                alpha=0.8)
-    
-    ax.set_xlabel('Matrix Size (n×n)', fontsize=14, fontweight='bold')
-    ax.set_ylabel('Execution Time (seconds)', fontsize=14, fontweight='bold')
-    ax.set_title('Scalability: Execution Time vs Matrix Size\n(Básico vs Optimizado vs Paralelo vs MapReduce)', 
-                 fontsize=16, fontweight='bold', pad=20)
-    ax.legend(fontsize=10, loc='upper left', ncol=2)
-    ax.grid(True, alpha=0.3, linestyle='--')
+    ax.set_xlabel('Tamaño de Matriz (N×N)', fontsize=12)
+    ax.set_ylabel('Tiempo de Ejecución (segundos)', fontsize=12)
+    ax.set_title('Escalabilidad: Tiempo vs Tamaño de Matriz', fontsize=14, fontweight='bold')
+    ax.legend(fontsize=10)
+    ax.grid(True, alpha=0.3)
+    ax.set_xscale('log', base=2)
     ax.set_yscale('log')
     
     plt.tight_layout()
-    plt.savefig('results/plots/scalability.png', dpi=300, bbox_inches='tight')
-    print("✓ Gráfica guardada:  results/plots/scalability.png")
-
+    plt.savefig('results/scalability.png', dpi=300, bbox_inches='tight')
+    print("✓ Gráfica guardada:  results/scalability.png")
+    plt.close()
 
 def plot_speedup(results):
     """
@@ -127,13 +110,10 @@ def plot_speedup(results):
     
     plt.tight_layout()
     plt.savefig('results/plots/speedup.png', dpi=300, bbox_inches='tight')
-    print("✓ Gráfica guardada: results/plots/speedup. png")
+    print("✓ Gráfica guardada: results/plots/speedup.png")
 
 
 def plot_efficiency(results):
-    """
-    Gráfica 3: Efficiency vs Number of Workers
-    """
     sizes = [r['size'] for r in results]
     
     efficiency_data = {}  
@@ -179,9 +159,6 @@ def plot_efficiency(results):
 
 
 def plot_overhead(results):
-    """
-    Gráfica 4: Communication Overhead (Shuffle Time)
-    """
     sizes = [r['size'] for r in results]
     
     overhead_data = {}  
@@ -226,9 +203,6 @@ def plot_overhead(results):
 
 
 def plot_phase_breakdown(results):
-    """
-    Gráfica 5:  Breakdown de tiempos por fase (Map, Shuffle, Reduce)
-    """
     last_result = results[-1]
     size = last_result['size']
     
@@ -268,11 +242,10 @@ def plot_phase_breakdown(results):
     
     plt.tight_layout()
     plt.savefig('results/plots/phase_breakdown.png', dpi=300, bbox_inches='tight')
-    print("✓ Gráfica guardada:  results/plots/phase_breakdown. png")
+    print("✓ Gráfica guardada:  results/plots/phase_breakdown.png")
 
 
 def generate_all_plots(results_file='results/metrics.json'):
-    """Genera todas las gráficas"""
     print("\n" + "=" * 80)
     print("GENERANDO GRÁFICAS")
     print("=" * 80)
@@ -311,3 +284,5 @@ if __name__ == "__main__":
         print(f"\nError: {e}")
         import traceback
         traceback.print_exc()
+
+
